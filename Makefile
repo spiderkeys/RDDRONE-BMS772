@@ -42,14 +42,12 @@ STACKSIZE = $(CONFIG_NXP_BMS_STACKSIZE)
 MODULE    = $(CONFIG_NXP_BMS)
 
 # BMS application
-
 CSRCS   = src/data.c
 CSRCS   += src/cli.c
 CSRCS   += src/ledState.c
 CSRCS   += src/gpio.c
 CSRCS   += src/batManagement.c
 CSRCS   += src/spi.c
-CSRCS   += src/uavcan.c
 
 CSRCS   += src/BCC/bcc_wait.c
 CSRCS   += src/BCC/bcc_peripheries.c
@@ -62,10 +60,8 @@ CSRCS   += src/BCC/Derivatives/bcc_communication.c
 # CSRCS     += src/BCC/Derivatives/bcc_diagnostics.c
 CSRCS   += src/BCC/Derivatives/bcc_spi.c
 CSRCS   += src/BCC/Derivatives/bcc_tpl.c
-CSRCS   += src/UAVCAN/o1heap.c
-CSRCS   += src/UAVCAN/socketcan.c
-CSRCS   += src/UAVCAN/pnp.c
-CSRCS   += src/UAVCAN/portid.c
+CSRCS 	+= src/dronecan/drivers/socketcan.c
+CSRCS 	+= $(wildcard src/dronecan/generated/*.c)
 CSRCS   += src/sbc.c
 CSRCS   += src/nfc.c
 CSRCS   += src/a1007.c
@@ -73,18 +69,19 @@ CSRCS   += src/SMBus.c
 CSRCS   += src/i2c.c
 CSRCS   += src/power.c
 CSRCS   += src/display.c
+CSRCS	+= src/dronecan.c
 
 MAINSRC = src/main.c
 CFLAGS  += -I inc
 CFLAGS  += -I inc/BCC
 CFLAGS  += -I inc/BCC/Derivatives
-CFLAGS  += -I inc/UAVCAN
-CFLAGS  += -std=c11 -I$(APPDIR)/include/canutils
+CFLAGS  += -I inc/dronecan
+CFLAGS  += -I inc/dronecan/generated
+CFLAGS  += -std=c11 -I$(APPDIR)/include/canutils -D__NuttX__
 CFLAGS  += -I $(TOPDIR)/../nuttx/arch/arm/src/common
 CFLAGS  += -I $(TOPDIR)/../nuttx/boards/arm/s32k1xx/rddrone-bms772/src
 CFLAGS  += -I $(TOPDIR)/../nuttx/include/arch/chip
 CFLAGS  += -I $(TOPDIR)/../nuttx/include/arch/board
 CFLAGS  += -I $(TOPDIR)/../nuttx/arch/arm/src/s32k1xx
-
 
 include $(APPDIR)/Application.mk

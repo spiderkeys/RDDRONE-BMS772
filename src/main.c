@@ -48,7 +48,7 @@
 #include "ledState.h"
 #include "gpio.h"
 #include "batManagement.h"
-#include "uavcan.h"
+// #include "uavcan.h"
 #include "sbc.h"
 #include "nfc.h"
 #include "a1007.h"
@@ -64,7 +64,7 @@
  * Defines
  ****************************************************************************/
 #define BMS_VERSION_STRING "bms5.1-10.1"
-//#define DONT_DO_UAVCAN
+#define DONT_DO_UAVCAN
 
 #ifndef MCU_POWER_DOMAIN
     #define MCU_POWER_DOMAIN    0
@@ -3815,37 +3815,37 @@ static int handleParamChangeFunc(int argc, char *argv[])
                     cli_printfError("main ERROR: couldn't set i-charge-full!\n");
                 }           
             break;
-            // if one of the subject IDs has changed
-            case UAVCAN_ES_SUB_ID:
-            case UAVCAN_BS_SUB_ID:
-            case UAVCAN_BP_SUB_ID:
+            // // if one of the subject IDs has changed
+            // case UAVCAN_ES_SUB_ID:
+            // case UAVCAN_BS_SUB_ID:
+            // case UAVCAN_BP_SUB_ID:
 
-                // get the value
-                voidPointer = &gChangedDataArr[handleChangedDataArrayIndex];
-                uintValue = *(uint32_t*)voidPointer; 
-                uintValue &= UINT16_MAX;
+            //     // get the value
+            //     voidPointer = &gChangedDataArr[handleChangedDataArrayIndex];
+            //     uintValue = *(uint32_t*)voidPointer; 
+            //     uintValue &= UINT16_MAX;
 
-                // check if it is more than the maximum allowed value
-                if(uintValue > UAVCAN_MAX_SUB_ID && (uintValue != UAVCAN_UNSET_SUB_ID))
-                {
-                    // sleep to output the nsh> message first
-                    usleep(1);
+            //     // check if it is more than the maximum allowed value
+            //     if(uintValue > UAVCAN_MAX_SUB_ID && (uintValue != UAVCAN_UNSET_SUB_ID))
+            //     {
+            //         // sleep to output the nsh> message first
+            //         usleep(1);
 
-                    // output to the user
-                    cli_printfWarning("WARNING: Entered subject id: %d > (max) %d!\n", uintValue, UAVCAN_MAX_SUB_ID);
-                    cli_printf("Setting this subject ID (par: %d) to the unset value: %d\n", 
-                        gChangedParametersArr[handleChangedDataArrayIndex], UAVCAN_UNSET_SUB_ID);
+            //         // output to the user
+            //         cli_printfWarning("WARNING: Entered subject id: %d > (max) %d!\n", uintValue, UAVCAN_MAX_SUB_ID);
+            //         cli_printf("Setting this subject ID (par: %d) to the unset value: %d\n", 
+            //             gChangedParametersArr[handleChangedDataArrayIndex], UAVCAN_UNSET_SUB_ID);
                     
-                    // set the subject ID value to UAVCAN_UNSET_SUB_ID
-                    uintValue = UAVCAN_UNSET_SUB_ID;
-                    if(data_setParameter(gChangedParametersArr[handleChangedDataArrayIndex], &uintValue))
-                    {
-                        cli_printfError("main ERROR: couldn't set subject id (par %d)!\n", 
-                            gChangedParametersArr[handleChangedDataArrayIndex]);
-                    }       
-                }   
+            //         // set the subject ID value to UAVCAN_UNSET_SUB_ID
+            //         uintValue = UAVCAN_UNSET_SUB_ID;
+            //         if(data_setParameter(gChangedParametersArr[handleChangedDataArrayIndex], &uintValue))
+            //         {
+            //             cli_printfError("main ERROR: couldn't set subject id (par %d)!\n", 
+            //                 gChangedParametersArr[handleChangedDataArrayIndex]);
+            //         }       
+            //     }   
 
-            break;
+            // break;
             // in case of the emergency button enable variable
             case EMERGENCY_BUTTON_ENABLE:
 
